@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laravel-mysql
+  labels:
+    app: laravel
+spec:
+  selector:
+    matchLabels:
+      app: laravel
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: laravel
+        tier: mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 512Mi
+            cpu: 300m
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: laravel-secret
+              key: db_password
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: laravel-secret
+              key: db_password
+        - name: MYSQL_USER
+          valueFrom:
+            configMapKeyRef:
+              name: mysqlcm
+              key: username
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mysqlcm
+              key: database
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-laravel-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-laravel-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-laravel-pv-claim

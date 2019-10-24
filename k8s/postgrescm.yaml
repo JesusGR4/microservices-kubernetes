@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  database: django
+  db_host: django-postgres
+  port: "5432"
+  username: root
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: postgrescm

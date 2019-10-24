@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-postgres
+  labels:
+    app: django
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: django
+    tier: postgres
+  clusterIP: None

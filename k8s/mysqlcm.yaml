@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  database: laravel
+  db_host: laravel-mysql
+  port: "3306"
+  username: root
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: mysqlcm

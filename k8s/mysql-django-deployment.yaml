@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-mysql
+  labels:
+    app: django
+spec:
+  selector:
+    matchLabels:
+      app: django
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: django
+        tier: mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: django-mysql
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 512Mi
+            cpu: 300m
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: django-secret
+              key: db_password
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: django-secret
+              key: db_password
+        - name: MYSQL_USER
+          valueFrom:
+            configMapKeyRef:
+              name: mysqlcm-django
+              key: username
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mysqlcm-django
+              key: database
+        ports:
+        - containerPort: 3306
+          name: django-mysql
+        volumeMounts:
+        - name: mysql-django-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-django-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-django-pv-claim
