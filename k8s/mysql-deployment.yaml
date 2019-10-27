@@ -50,7 +50,7 @@ spec:
               key: database
         ports:
         - containerPort: 3306
-          name: mysql
+          name: laravel-mysql
         volumeMounts:
         - name: mysql-laravel-persistent-storage
           mountPath: /var/lib/mysql

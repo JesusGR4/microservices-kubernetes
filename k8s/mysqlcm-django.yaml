@@ -4,6 +4,7 @@ data:
   db_host: django-mysql
   port: "3306"
   username: root
+  default_db_connection: mysql
 kind: ConfigMap
 metadata:
   creationTimestamp: null

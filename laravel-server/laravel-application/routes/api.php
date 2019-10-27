@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
+
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'AuthController@login')->name('login');
 });
@@ -25,4 +26,3 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('getAll', 'TweetController@getAll')->name('getAll');
     });
 });
-

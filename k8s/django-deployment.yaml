@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django
+  labels:
+    app: django
+    tier: api
+spec:
+  selector:
+    matchLabels:
+      app: django
+      tier: api
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: django
+        tier: api
+    spec:
+      containers:
+      - image: jesusgr4/solutions-repository:django-v1.0.2
+        name: django
+        command: ["/bin/bash"]
+        args: ["-c", "sleep 15 && python /app/manage.py migrate && python /app/manage.py runserver 0.0.0.0:8080"]
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 300m
+          limits:
+            memory: 512Mi
+            cpu: 400m
+        env:
+        - name: DB_PASSWORD_DJANGO
+          valueFrom:
+            secretKeyRef:
+              name: django-secret
+              key: db_password            
+        - name: DB_HOST_DJANGO
+          valueFrom:
+            configMapKeyRef:
+              name: mysqlcm-django
+              key: db_host
+        - name: DB_PORT_DJANGO
+          valueFrom:
+            configMapKeyRef:
+              name: mysqlcm-django
+              key: port
+        - name: DB_DATABASE_DJANGO
+          valueFrom:
+            configMapKeyRef:
+              name: mysqlcm-django
+              key: database
+        - name: DB_USERNAME_DJANGO
+          valueFrom:
+            configMapKeyRef:
+              name: mysqlcm-django
+              key: username                  
+        - name: DEFAULT_DB_CONNECTION
+          valueFrom:
+            configMapKeyRef:
+              name: mysqlcm-django
+              key: default_db_connection
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: postgrescm
+              key: database
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: postgrescm
+              key: username
+        - name: POSTGRES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: postgrescm
+              key: db_host
+        - name: POSTGRES_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: postgrescm
+              key: port
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: django-secret
+              key: postgres_password                    
+        ports:
+        - containerPort: 8080
+          name: django

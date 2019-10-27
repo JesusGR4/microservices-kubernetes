@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   laravel:
-    image: jesusgr4/solutions-repository:laravel-server-v1.0.0
+    image: jesusgr4/solutions-repository:laravel-server-v1.0.2
     command: bash -c "php /var/www/html/artisan migrate && php /var/www/html/artisan db:seed && php /var/www/html/artisan passport:install && php /var/www/html/artisan db:seed && php-fpm"
     build:
       context: ./laravel-server/laravel-application/
@@ -19,14 +19,14 @@ services:
       - DEBUG_MODE=$DEBUG_MODE
       - DJANGO_HOST=$DJANGO_HOST
     restart: unless-stopped
-    container_name: laravel-application
+    container_name: laravel
     volumes:
       - ./laravel-server/laravel-application:/var/www/html
     links:
       - db
 
   nginx:
-    image: jesusgr4/solutions-repository:nginx-server-v1.0.0
+    image: jesusgr4/solutions-repository:nginx-server-v1.0.2
     build:
       context: ./laravel-server/
       dockerfile: Dockerfile
@@ -71,7 +71,7 @@ services:
       - ./dbdata/postgres:/var/lib/postgresql/data
   
   django:
-    image: jesusgr4/solutions-repository:django-v1.0.0
+    image: jesusgr4/solutions-repository:django-v1.0.2
     container_name: django-app
     build: 
       context: ./django-server/django/

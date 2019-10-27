@@ -19,10 +19,10 @@ spec:
         tier: fullstack
     spec:
       containers:
-      - image: jesusgr4/solutions-repository:laravel-server-v1.0.0
+      - image: jesusgr4/solutions-repository:laravel-server-v1.0.2
         name: laravel
         command: ["/bin/bash"]
-        args: ["-c", "php-fpm"]
+        args: ["-c", "sleep 60 && php /var/www/html/artisan migrate && php /var/www/html/artisan db:seed && php /var/www/html/artisan passport:install && php /var/www/html/artisan db:seed && php-fpm"]
         resources:
           requests:
             memory: 256Mi
@@ -80,7 +80,7 @@ spec:
         - containerPort: 9000
           name: laravel
 
-      - image: jesusgr4/solutions-repository:nginx-server-v1.0.0
+      - image: jesusgr4/solutions-repository:nginx-server-v1.0.2
         name: server
         resources:
           requests:
