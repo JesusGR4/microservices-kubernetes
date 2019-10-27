@@ -6,7 +6,9 @@ Hello! In the following lines I'll show you how to interact with this Laravel Pr
 
 For the installation, you will have to execute the following steps:
 1. ```kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)```
-2. Just do: ```cd k8s && kubectl apply -f . ```
+2. ```kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml``` 
+
+3. Just do: ```cd k8s && kubectl apply -f . ```
 NOTE: I don't really know why, but if you get any errors, in general, PHP connection to DB, just re-execute this.
 
 ## Steps
@@ -43,3 +45,8 @@ Using postman, you will have to make a GET POST API call to the follwing URI lik
 
 You will have to add an Authorization Bearer with the returned token before again
 
+### Kiali diagram
+
+I know that's now what you were expecting to see, but I hadn't enough time to configure each service
+
+!["Kiali diagram"](images/kiali.png "Kiali diagram")
