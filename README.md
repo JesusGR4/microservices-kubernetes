@@ -50,3 +50,16 @@ You will have to add an Authorization Bearer with the returned token before agai
 I know that's now what you were expecting to see, but I hadn't enough time to configure each service
 
 !["Kiali diagram"](images/kiali.png "Kiali diagram")
+
+### Best practices
+
+1. Python services is observable outsite the Kubernetes cluster
+
+!["Python log"](images/python-log.png "Python log")
+
+2. You can change Django Database using a Environment variable
+
+!["Database selection"](images/database.png "Database selection")
+
+3. Application is build in microservices-architecture.
+
